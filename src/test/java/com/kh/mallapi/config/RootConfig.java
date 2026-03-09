@@ -10,9 +10,9 @@ public class RootConfig {
 	@Bean
 	public ModelMapper getMapper() {
 		ModelMapper modelMapper = new ModelMapper();
-		modelMapper.getConfiguration().setFieldMatchingEnabled(true)
-				.setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
-				.setMatchingStrategy(MatchingStrategies.LOOSE);
+		modelMapper.getConfiguration().setFieldMatchingEnabled(true) //이름이일치할경우 매핑
+				.setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE) //필드접근수준 private
+				.setMatchingStrategy(MatchingStrategies.LOOSE); //필드이름이 비슷하면 매핑
 		return modelMapper;
 	}
 }
