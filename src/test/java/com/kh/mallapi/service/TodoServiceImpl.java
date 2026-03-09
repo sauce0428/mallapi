@@ -1,5 +1,7 @@
 package com.kh.mallapi.service;
 
+import java.util.Optional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,11 +19,11 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class TodoServiceImpl implements TodoService {
 
-	//@Override
-	//public Long register(TodoDTO todoDTO) {
-	//	log.info(" ");
-	//	return null;
-	//}
+	// @Override
+	// public Long register(TodoDTO todoDTO) {
+	// log.info(" ");
+	// return null;
+	// }
 
 	// 자동주입 대상은 final로
 	private final ModelMapper modelMapper;
@@ -35,4 +37,27 @@ public class TodoServiceImpl implements TodoService {
 
 		return savedTodo.getTno();
 	}
+
+	@Override
+	public void modify(TodoDTO todoDTO) {
+		Optional<Todo> result = todoRepository.findById(todoDTO.getTno());
+		Todo todo = result.orElseThrow();
+		todo.changeTitle(todoDTO.getTitle());
+		todo.changeDueDate(todoDTO.getDueDate());
+		todo.changeComplete(todoDTO.isComplete());
+		todoRepository.save(todo);
+	}
+
+	@Override
+	public void remove(Long tno) {
+		todoRepository.deleteById(tno);
+	}
+
+	@Override
+	public TodoDTO get(Long tno) {
+		java.util.Optional<Todo> result = todoRepository.findById(tno);
+		Todo todo = result.orElseThrow();
+		TodoDTO dto = modelMapper.map(todo, TodoDTO.class);
+		return dto;
+	}	
 }
